@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clothing Swap Platform</title>
+
+    <!-- Google Font (easy to change later) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Community Clothing Swap</h1>
+            <p class="subtitle">
+                Select clothing items and request a swap with other users
+            </p>
+        </header>
+
+        <main>
+            <canvas id="glCanvas" width="800" height="600"></canvas>
+
+            <div class="controls">
+                <button id="swapBtn">Request Swap</button>
+                <p id="status">Select at least one item to begin</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>© Local Community Exchange Initiative</p>
+        </footer>
+    </div>
+
+    <!-- WebGL App -->
+    <script src="app.js"></script>
+</body>
+</html>
