@@ -6,7 +6,6 @@ if (!gl) {
 }
 gl.viewport(0, 0, canvas.width, canvas.height);
 
-/* ================= SHADERS ================= */
 const vertexShaderSource = `
     attribute vec2 aPosition;
     attribute vec2 aTexCoord;
@@ -28,7 +27,6 @@ const fragmentShaderSource = `
     }
 `;
 
-/* ================= SHADER UTILS ================= */
 function createShader(gl, type, source) {
     const shader = gl.createShader(type);
     gl.shaderSource(shader, source);
@@ -53,13 +51,11 @@ function createProgram(gl, vertexShader, fragmentShader) {
     return program;
 }
 
-/* ================= COMPILE & LINK ================= */
 const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
 const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
 const program = createProgram(gl, vertexShader, fragmentShader);
 gl.useProgram(program);
 
-/* ================= UNIFORMS & ATTRIBUTES ================= */
 const translationLocation = gl.getUniformLocation(program, "uTranslation");
 const scaleLocation = gl.getUniformLocation(program, "uScale");
 const uTextureLocation = gl.getUniformLocation(program, "uTexture");
@@ -67,7 +63,6 @@ const uTextureLocation = gl.getUniformLocation(program, "uTexture");
 const positionLocation = gl.getAttribLocation(program, "aPosition");
 const texCoordLocation = gl.getAttribLocation(program, "aTexCoord");
 
-/* ================= GRID ITEMS ================= */
 const gridRows = 2;
 const gridCols = 3;
 const itemSpacingX = 0.5;
@@ -104,7 +99,6 @@ for (let row = 0; row < gridRows; row++) {
     }
 }
 
-/* ================= VERTEX BUFFER ================= */
 const vertices = new Float32Array([
     // x, y, u, v
     -0.2, -0.2, 0.0, 0.0,
@@ -117,14 +111,11 @@ const buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 
-// Set up aPosition
 gl.enableVertexAttribArray(positionLocation);
 gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 16, 0);
-// Set up aTexCoord
 gl.enableVertexAttribArray(texCoordLocation);
 gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 16, 8);
 
-/* ================= LOAD TEXTURES ================= */
 function loadTexture(gl, url) {
     const texture = gl.createTexture();
     const image = new Image();
@@ -144,7 +135,6 @@ function loadTexture(gl, url) {
 
 items.forEach(item => item.texture = loadTexture(gl, item.imgSrc));
 
-/* ================= AUDIO ================= */
 const audioContext = new AudioContext();
 
 function loadSound(url) {
@@ -171,7 +161,6 @@ function playSound(buffer) {
     source.start();
 }
 
-/* ================= MOUSE ================= */
 function getMousePos(evt) {
     const rect = canvas.getBoundingClientRect();
     const x = ((evt.clientX - rect.left) / canvas.width) * 2 - 1;
@@ -199,7 +188,6 @@ canvas.addEventListener("click", async evt => {
     });
 });
 
-/* ================= SWAP BUTTON ================= */
 document.getElementById("swapBtn").addEventListener("click", () => {
     const selectedItems = items.filter(item => item.selected);
     if (selectedItems.length > 0) {
@@ -214,7 +202,6 @@ document.getElementById("swapBtn").addEventListener("click", () => {
     }
 });
 
-/* ================= ANIMATE & RENDER ================= */
 function animate() {
     items.forEach(item => {
         let baseScale = 1.0;
@@ -233,8 +220,6 @@ function render() {
     items.forEach(item => {
         gl.uniform2fv(translationLocation, [item.x, item.y]);
         gl.uniform1f(scaleLocation, item.scale);
-
-        // Bind the item’s texture
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, item.texture);
         gl.uniform1i(uTextureLocation, 0);
